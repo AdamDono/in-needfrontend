@@ -1,11 +1,73 @@
 body {
     font-family: Arial, sans-serif;
+    background-color: #F5F5F5;
+}
+
+.btn-custom {
+    background-color: #4CAF50;  /* New attractive green color */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+.btn-custom:hover {
+    background-color: #388E3C;  /* Darker green for hover */
+}
+
+.card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: white;
 }
 
 .navbar-brand {
     font-weight: bold;
+    font-size: 24px;
 }
 
 .container {
     max-width: 1200px;
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.progress {
+    height: 10px;
+    margin: 10px 0;
+}
+
+.progress-bar {
+    background-color: #4CAF50; }
+
+.form-control {
+    border-radius: 5px;
+}
+
+.text-center h2 {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.text-center h4 {
+    font-size: 18px;
+}
+
+/* Added for links in sign-up/login pages */
+.text-center a {
+    color: #4CAF50;  /* Match button color for consistency */
+    text-decoration: none;
+}
+
+.text-center a:hover {
+    text-decoration: underline;
+}
+
+/* Make landing page image responsive */
+.img-fluid {
+    max-width: 100%;
+    height: auto;
 }
