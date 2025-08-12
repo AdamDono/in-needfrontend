@@ -1,10 +1,12 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #F5F5F5;
+    padding-bottom: 60px; /* Space for bottom nav on mobile */
+    padding-top: 60px; /* Space for top nav on mobile */
 }
 
 .btn-custom {
-    background-color: #4CAF50;  /* New attractive green color */
+    background-color: #4CAF50; /* Attractive green */
     color: white;
     border: none;
     padding: 10px 20px;
@@ -12,7 +14,7 @@ body {
 }
 
 .btn-custom:hover {
-    background-color: #388E3C;  /* Darker green for hover */
+    background-color: #388E3C; /* Darker green for hover */
 }
 
 .card {
@@ -41,7 +43,8 @@ body {
 }
 
 .progress-bar {
-    background-color: #4CAF50; }
+    background-color: #0D6EFD; /* Blue for progress bar */
+}
 
 .form-control {
     border-radius: 5px;
@@ -56,9 +59,8 @@ body {
     font-size: 18px;
 }
 
-/* Added for links in sign-up/login pages */
 .text-center a {
-    color: #4CAF50;  /* Match button color for consistency */
+    color: #4CAF50;
     text-decoration: none;
 }
 
@@ -70,4 +72,81 @@ body {
 .img-fluid {
     max-width: 100%;
     height: auto;
+}
+
+/* Top and Bottom Nav Styles */
+.navbar-light {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.fixed-top, .fixed-bottom {
+    z-index: 1030; /* Ensure navs are above content */
+}
+
+.d-block.d-md-none .nav-link {
+    color: #4CAF50;
+    text-align: center;
+    padding: 5px;
+}
+
+.d-block.d-md-none .nav-link i {
+    display: block;
+    margin: 0 auto;
+}
+
+.d-block.d-md-none .nav-link:hover i {
+    color: #388E3C;
+}
+
+/* Bottom Nav Text Labels */
+.nav-text {
+    display: block;
+    font-size: 12px;
+    color: #333;
+}
+
+/* Top Nav Toggle Styles */
+.navbar-toggler {
+    border: none;
+    padding: 0.25rem 0.75rem;
+    font-size: 1.25rem;
+    line-height: 1;
+}
+
+#navbarNav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#navbarNav .nav-item {
+    padding: 10px;
+}
+
+#navbarNav .nav-link {
+    color: #333 !important;
+}
+
+#navbarNav .nav-link:hover {
+    color: #4CAF50 !important;
+}
+
+/* Hide navs on desktop (md and up) */
+@media (min-width: 768px) {
+    .d-block.d-md-none {
+        display: none !important;
+    }
+}
+
+/* Badge styles */
+.badge.bg-danger {
+    background-color: #FF0000 !important;
+}
+
+.badge.bg-warning {
+    background-color: #FFC107 !important;
 }
