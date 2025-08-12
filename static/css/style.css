@@ -114,24 +114,31 @@ body {
     line-height: 1;
 }
 
-#navbarNav {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
+.offcanvas-start {
+    width: 300px; /* Wide width for toggle nav */
     background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
 }
 
-#navbarNav .nav-item {
+.offcanvas-header {
+    border-bottom: 1px solid #ddd;
+}
+
+.offcanvas-body .nav-item {
     padding: 10px;
 }
 
-#navbarNav .nav-link {
+.offcanvas-body .nav-link {
     color: #333 !important;
+    display: flex;
+    align-items: center;
 }
 
-#navbarNav .nav-link:hover {
+.offcanvas-body .nav-link i {
+    margin-right: 10px; /* Space between icon and text */
+}
+
+.offcanvas-body .nav-link:hover {
     color: #4CAF50 !important;
 }
 
@@ -149,4 +156,9 @@ body {
 
 .badge.bg-warning {
     background-color: #FFC107 !important;
+}
+
+/* Adjust spacing for reduced bottom nav (3 items) */
+.d-flex.justify-content-around {
+    justify-content: space-around !important; /* Even spacing for 3 or 4 items */
 }
