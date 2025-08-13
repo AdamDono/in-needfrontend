@@ -50,28 +50,26 @@
         <div class="row">
             <div class="col-12">
                 <h1 class="text-center">Discovery</h1>
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Individual in Need</h5>
-                        <p class="card-text">Description of individual or organization.</p>
-                        <span class="badge bg-danger">High Priority</span>
-                        <div class="progress mt-2">
-                            <div class="progress-bar" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75 Days Left</div>
+                {% if current_user.role == 'admin' %}
+                    <a href="{{ url_for('main.admin_dashboard') }}" class="btn btn-custom mb-3">Admin Dashboard</a>
+                {% endif %}
+                {% if posts %}
+                    {% for post in posts %}
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ post.title }}</h5>
+                                <p class="card-text">{{ post.description }}</p>
+                                <span class="badge" style="background-color: {% if post.priority == 'High' %}#FF0000{% elif post.priority == 'Medium' %}#FFC107{% else %}#28A745{% endif %}">{{ post.priority }} Priority</span>
+                                <div class="progress mt-2">
+                                    <div class="progress-bar" role="progressbar" style="width: {{ (post.days_left / 100) * 100 }}%;" aria-valuenow="{{ post.days_left }}" aria-valuemin="0" aria-valuemax="100">{{ post.days_left }} Days Left</div>
+                                </div>
+                                <a href="#" class="btn btn-custom mt-2">Donate</a>
+                            </div>
                         </div>
-                        <a href="#" class="btn btn-custom mt-2">Donate</a>
-                    </div>
-                </div>
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Organization in Need</h5>
-                        <p class="card-text">Description of individual or organization.</p>
-                        <span class="badge bg-warning">Medium Priority</span>
-                        <div class="progress mt-2">
-                            <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50 Days Left</div>
-                        </div>
-                        <a href="#" class="btn btn-custom mt-2">Donate</a>
-                    </div>
-                </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-center">No approved needs available.</p>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -92,7 +90,7 @@
                     <i class="bi bi-heart-fill" style="font-size: 24px; color: #4CAF50;"></i>
                     <span class="nav-text">Donate</span>
                 </a>
-                {% if current_user.role in ['organization', 'individual'] %}
+                {% if current_user.role in ['organization', 'individual', 'admin'] %}
                     <a class="nav-link text-center" href="{{ url_for('main.post') }}">
                         <i class="bi bi-pencil-square" style="font-size: 24px; color: #4CAF50;"></i>
                         <span class="nav-text">Post</span>
