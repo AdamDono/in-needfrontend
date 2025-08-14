@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        .card {
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        .profile-img {
+            max-width: 150px;
+            max-height: 150px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid #ddd;
+        }
+        .preview-img {
+            max-width: 150px;
+            max-height: 150px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-top: 10px;
+            display: none;
+        }
+        .debug {
+            border: 1px dashed red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8">
+                <div class="card p-4">
+                    <h1 class="text-center mb-4">Profile</h1>
+                    {% if current_user.profile_image %}
+                        <img src="data:image/jpeg;base64,{{ current_user.profile_image|to_base64 }}" class="profile-img mx-auto d-block mb-3" alt="Profile Image">
+                    {% else %}
+                        <div class="profile-img mx-auto d-block mb-3" style="background-color: #eee; width: 150px; height: 150px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                            <i class="bi bi-person" style="font-size: 50px; color: #ccc;"></i>
+                        </div>
+                    {% endif %}
+                    <form method="POST" action="{{ url_for('main.profile') }}" enctype="multipart/form-data" onsubmit="return validateForm()">
+                        {{ form.hidden_tag() }}
+                        <div class="mb-3">
+                            {{ form.username.label(class="form-label") }}
+                            {{ form.username(class="form-control debug") }}
+                            {% for error in form.username.errors %}
+                                <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.bio.label(class="form-label") }}
+                            {{ form.bio(class="form-control debug", rows="3") }}
+                            {% for error in form.bio.errors %}
+                                <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.profile_image.label(class="form-label") }}
+                            {{ form.profile_image(class="form-control", onchange="previewImage(event)") }}
+                            <img id="preview" class="preview-img mx-auto d-block" alt="Preview">
+                            {% for error in form.profile_image.errors %}
+                                <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        {% if current_user.role in ['organization', 'individual'] and current_user.verification_status in ['pending', 'rejected'] %}
+                            <div class="mb-3">
+                                {{ form.document.label(class="form-label") }}
+                                {{ form.document(class="form-control") }}
+                                {% for error in form.document.errors %}
+                                    <div class="text-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <p><strong>Verification Status:</strong> {{ current_user.verification_status }}</p>
+                        {% if current_user.verification_status == 'approved' %}
+                            <p class="text-success">Your account is verified. You can now create posts!</p>
+                        {% elif current_user.verification_status == 'rejected' %}
+                            <p class="text-danger">Your verification was rejected. Please resubmit documents.</p>
+                        {% endif %}
+                        {{ form.submit(class="btn btn-primary w-100 mt-3") }}
+                    </form>
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-info mt-3">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Document Submission -->
+    <div class="modal fade" id="docSubmittedModal" tabindex="-1" aria-labelledby="docSubmittedModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="docSubmittedModalLabel">Documents Submitted</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Your verification documents have been submitted and are awaiting certification. You will be notified once approved.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function previewImage(event) {
+            const preview = document.getElementById('preview');
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            } else {
+                preview.style.display = 'none';
+            }
+        }
+
+        function validateForm() {
+            return true; // Add validation if needed
+        }
+
+        // Show modal if alert is set
+        document.addEventListener('DOMContentLoaded', function() {
+            const showAlert = '{{ session.pop("show_alert", None) }}';
+            if (showAlert === 'doc_submitted') {
+                new bootstrap.Modal(document.getElementById('docSubmittedModal')).show();
+            }
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
